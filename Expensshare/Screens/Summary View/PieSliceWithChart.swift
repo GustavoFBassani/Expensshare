@@ -16,7 +16,7 @@ struct PieSliceWithChart: View {
         HStack(spacing: 51) {
             Chart(participantExpenses) { participant in
                 SectorMark(
-                    angle: .value("value", participant.value),
+                    angle: .value("value", participant.totalExpenses),
                     angularInset: 1
                 )
                 .foregroundStyle(participantColor(participant.name))
@@ -31,7 +31,8 @@ struct PieSliceWithChart: View {
                             .fill(participantColor(participant.name))
                             .frame(width: 12, height: 12)
                         Text(participant.name)
-                            .foregroundStyle(.gray)
+                            .foregroundStyle(.primary)
+                            .font(.headline)
                     }
                 }
             }

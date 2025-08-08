@@ -18,13 +18,12 @@ struct participantGroupsView: View {
                         HStack {
                             Text(participant.name)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                            Text(formatCurrency(participant.value))
+                            Text(formatCurrency(participant.totalExpenses))
                         }
                         
                         Divider()
                     }
                 }
-                
             }
         }
         .padding()
@@ -33,22 +32,21 @@ struct participantGroupsView: View {
                 .foregroundStyle(.white)
         )
     }
-    
 }
 
 struct StatCard: View {
     let title: String
     let value: String
-
+    
     var body: some View {
         HStack(spacing: 8) {
             Image(systemName: "chart.bar.fill")
                 .foregroundStyle(.white)
-
+            
             Text(title)
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity, alignment: .leading)
-
+            
             Text(value)
                 .foregroundStyle(.white)
                 .fontWeight(.bold)
@@ -58,22 +56,6 @@ struct StatCard: View {
             RoundedRectangle(cornerRadius: 16)
                 .fill(.cardBackground)
         )
-    }
-}
-
-struct FilledButton: View {
-    let title: String
-    let titleColor: Color
-    let backgroundColor: Color
-    let action: () -> Void
-
-    var body: some View {
-        Button(title, action: action)
-            .fontWeight(.bold)
-            .padding()
-            .frame(maxWidth: .infinity)
-            .foregroundStyle(titleColor)
-            .background(RoundedRectangle(cornerRadius: 16).fill(backgroundColor))
     }
 }
 
@@ -89,7 +71,7 @@ func mediaOfExpenses() -> String {
     var count: Double = 0
     
     for participant in participantExpenses {
-        sum += participant.value
+        sum += participant.totalExpenses
         count += 1
     }
     let media = sum/count
@@ -100,34 +82,55 @@ func totalOfExpenses() -> String {
     var sum: Double = 0
     
     for participant in participantExpenses {
-        sum += participant.value
+        sum += participant.totalExpenses
     }
     return formatCurrency(sum)
 }
 
 struct GroupsView: View {
     
+    @State private var showAddExpenses = false
+    
     var body: some View {
         NavigationStack {
-    
             ScrollView {
                 VStack(spacing:16){
                     PieSliceWithChart()
                     participantGroupsView()
                     StatCard(title: "Média", value: mediaOfExpenses())
                     StatCard(title: "Total", value: totalOfExpenses())
-                    FilledButton(title: "Settle Up", titleColor: .white, backgroundColor: .greenAccent) { }
-                    FilledButton(title: "Expenses", titleColor: .greenAccent, backgroundColor: .white) { }
-                                        
+                    RegularButton(title: "Settle Up", titleColor: .white, backgroundColor: .greenAccent) { }
+                    RegularButton(title: "Expenses", titleColor: .greenAccent, backgroundColor: .white) { }
+                    Spacer()
                 }
+                .padding(.horizontal)
+                .padding(.top, 24)
+                .frame(maxHeight: .infinity, alignment: .bottom)
+                
+                HStack {
+                    Spacer()
+                    Button {
+                        showAddExpenses = true
+                    } label: {
+                        Circle()
+                            .fill(.white)
+                            .frame(width: 62)
+                        
+                    }
+                    .shadow(color: .shadow, radius: 2, x: 0, y: 4)
+                    .overlay {
+                        Image(systemName: "plus")
+                            .foregroundStyle(.blue)
+                            .fontWeight(.semibold)
+                    }
+                }
+                .padding()
             }
-            .padding(.horizontal)
-            .padding(.top, 24)
-            .frame(maxHeight: .infinity, alignment: .top)
             .background(Color.background)
-            .navigationTitle("Roommates")
+            .navigationTitle("Summary View")
             .toolbarBackground(.white, for: .navigationBar)
             .toolbarBackgroundVisibility(.visible, for: .navigationBar)
+            .sheet(isPresented: $showAddExpenses) { AddExpenseFirstView() }
         }
     }
 }

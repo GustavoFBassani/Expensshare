@@ -25,7 +25,7 @@ struct ExpensshareApp: App {
 
     var body: some Scene {
         WindowGroup {
-            TabBar()
+            GroupsView()
         }
         .modelContainer(sharedModelContainer)
     }
