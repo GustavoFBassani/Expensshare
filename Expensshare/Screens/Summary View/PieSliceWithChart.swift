@@ -10,11 +10,11 @@ import Charts
 
 struct PieSliceWithChart: View {
     
-    let uniqueNames: [String] = participantExpenses.map(\.name)
+    let uniqueNames: [String] = mockedUser.map(\.name)
     
     var body: some View {
         HStack(spacing: 51) {
-            Chart(participantExpenses) { participant in
+            Chart(mockedUser) { participant in
                 SectorMark(
                     angle: .value("value", participant.totalExpenses),
                     angularInset: 1
@@ -25,7 +25,7 @@ struct PieSliceWithChart: View {
             .chartLegend(.hidden)
 
             VStack(alignment: .leading, spacing: 12) {
-                ForEach(participantExpenses) { participant in
+                ForEach(mockedUser) { participant in
                     HStack(spacing: 8) {
                         Circle()
                             .fill(participantColor(participant.name))

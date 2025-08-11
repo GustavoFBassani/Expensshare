@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+//for buttons with action
 struct RegularButton: View {
     let title: String
     let titleColor: Color
@@ -14,12 +14,39 @@ struct RegularButton: View {
     let action: () -> Void
     
     var body: some View {
-        Button(title, action: action)
-            .fontWeight(.bold)
+        Button("", action: action)
             .padding()
             .frame(maxWidth: .infinity)
-            .foregroundStyle(titleColor)
             .background(RoundedRectangle(cornerRadius: 16).fill(backgroundColor))
             .shadow(color: .shadow, radius: 2, x: 0, y: 4)
+            .overlay {
+                Text(title)
+                    .fontWeight(.bold)
+                    .foregroundStyle(titleColor)
+                    .foregroundStyle(.blue)
+                    .fontWeight(.semibold)
+            }
     }
+}
+// for navigations with regular layout
+struct RegularButtonLabel: View {
+    let title: String
+    let titleColor: Color
+    let backgroundColor: Color
+
+    var body: some View {
+        Text(title)
+            .fontWeight(.bold)
+            .foregroundStyle(titleColor)
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(RoundedRectangle(cornerRadius: 16).fill(backgroundColor))
+            .shadow(color: .shadow, radius: 2, x: 0, y: 4)
+
+    }
+}
+
+#Preview {
+    RegularButtonLabel(title: "button", titleColor: .white, backgroundColor: .greenAccent)
+        .padding()
 }

@@ -11,7 +11,7 @@ struct participantGroupsView: View {
     
     var body: some View {
         VStack {
-            ForEach(participantExpenses) { participant in
+            ForEach(mockedUser) { participant in
                 HStack {
                     Image(participant.name)
                     VStack {
@@ -59,18 +59,24 @@ struct StatCard: View {
     }
 }
 
+extension NumberFormatter {
+    static let brCurrency: NumberFormatter = {
+        let f = NumberFormatter()
+        f.numberStyle = .currency
+        f.locale = Locale(identifier: "pt_BR")
+        return f
+    }()
+}
+
 func formatCurrency(_ value: Double) -> String {
-    let formatter = NumberFormatter()
-    formatter.numberStyle = .currency
-    formatter.locale = Locale(identifier: "pt_BR")
-    return formatter.string(from: NSNumber(value: value)) ?? "\(value)"
+    NumberFormatter.brCurrency.string(from: NSNumber(value: value)) ?? "\(value)"
 }
 
 func mediaOfExpenses() -> String {
     var sum: Double = 0
     var count: Double = 0
     
-    for participant in participantExpenses {
+    for participant in mockedUser {
         sum += participant.totalExpenses
         count += 1
     }
@@ -81,7 +87,7 @@ func mediaOfExpenses() -> String {
 func totalOfExpenses() -> String {
     var sum: Double = 0
     
-    for participant in participantExpenses {
+    for participant in mockedUser {
         sum += participant.totalExpenses
     }
     return formatCurrency(sum)
@@ -90,6 +96,7 @@ func totalOfExpenses() -> String {
 struct GroupsView: View {
     
     @State private var showAddExpenses = false
+    @State private var showAllExpenses = false
     
     var body: some View {
         NavigationStack {
@@ -100,37 +107,39 @@ struct GroupsView: View {
                     StatCard(title: "Média", value: mediaOfExpenses())
                     StatCard(title: "Total", value: totalOfExpenses())
                     RegularButton(title: "Settle Up", titleColor: .white, backgroundColor: .greenAccent) { }
-                    RegularButton(title: "Expenses", titleColor: .greenAccent, backgroundColor: .white) { }
+                    RegularButton(title: "Expenses", titleColor: .greenAccent, backgroundColor: .white) {
+                        showAddExpenses = true
+                    }
                     Spacer()
                 }
                 .padding(.horizontal)
                 .padding(.top, 24)
                 .frame(maxHeight: .infinity, alignment: .bottom)
                 
-                HStack {
-                    Spacer()
-                    Button {
-                        showAddExpenses = true
-                    } label: {
-                        Circle()
-                            .fill(.white)
-                            .frame(width: 62)
-                        
-                    }
-                    .shadow(color: .shadow, radius: 2, x: 0, y: 4)
-                    .overlay {
-                        Image(systemName: "plus")
-                            .foregroundStyle(.blue)
-                            .fontWeight(.semibold)
-                    }
-                }
-                .padding()
             }
             .background(Color.background)
-            .navigationTitle("Summary View")
             .toolbarBackground(.white, for: .navigationBar)
             .toolbarBackgroundVisibility(.visible, for: .navigationBar)
-            .sheet(isPresented: $showAddExpenses) { AddExpenseFirstView() }
+            .sheet(isPresented: $showAddExpenses) {AddExpenseFirstView()}
+            .sheet(isPresented: $showAllExpenses) {AllExpenses()}
+            .navigationTitle("Summary View")
+            .overlay(alignment: .bottomTrailing) {
+                Button {
+                    showAddExpenses = true
+                } label: {
+                    Circle()
+                        .fill(.white)
+                        .frame(width: 62)
+                    
+                }
+                .shadow(color: .shadow, radius: 2, x: 0, y: 4)
+                .overlay {
+                    Image(systemName: "plus")
+                        .foregroundStyle(.blue)
+                        .fontWeight(.semibold)
+                }
+            .padding()
+            }
         }
     }
 }
@@ -138,3 +147,5 @@ struct GroupsView: View {
 #Preview {
     GroupsView()
 }
+
+//botoes nao funcionam???
