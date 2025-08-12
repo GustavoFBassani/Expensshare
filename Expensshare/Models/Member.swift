@@ -37,7 +37,7 @@ public class Member: Identifiable {
     var name: String
     
     @Relationship(deleteRule: .cascade, inverse: \Expenses.payer)
-    var expenses: [Expenses]
+    var expenses: [Expenses] 
     
     var totalExpenses: Double {
         expenses.reduce(0) { $0 + $1.amount} //reduce take a array and a single type with the sum of all elements

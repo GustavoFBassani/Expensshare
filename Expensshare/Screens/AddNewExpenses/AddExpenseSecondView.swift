@@ -6,17 +6,19 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct AddExpenseSecondView: View {
     
-    
-    
     @Environment(\.dismiss) var dismiss
+    @Environment(\.modelContext) var context
+    
     @State var expensesName = ""
     @State var description = ""
     @State var amount = ""
     @State var selectedDate = Date()
-    var selectedPayer: String
+//    var selectedPayer: String
+    var payer: Member?
     
     func isAllFieldsSelected() -> Bool {
         let expensesFilled = expensesName != ""
@@ -33,6 +35,14 @@ struct AddExpenseSecondView: View {
         return formatter.string(from: selectedDate)
     }
     
+    var amountDouble: Double? {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.locale = Locale(identifier: "pt_BR")
+        return formatter.number(from: amount) as? Double
+        
+    }
+    
     var body: some View {
 
         VStack(alignment: .leading, spacing: 24) {
@@ -46,12 +56,14 @@ struct AddExpenseSecondView: View {
                     Spacer()
                     
                     HStack {
-                        Image(selectedPayer)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 24, height: 24)
                         
-                        Text(selectedPayer)
+                        Image(payer?.name ?? "")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 24, height: 24)
+                            
+                            Text(payer?.name ?? "")
+                        
                     }
                     .foregroundStyle(.primary)
                     .font(.system(size: 17, weight: .medium))
@@ -115,12 +127,32 @@ struct AddExpenseSecondView: View {
                             
                     }
                     
-                RegularButton(title: "Add Expense",
-                              titleColor: isAllFieldsSelected() ? .white : .primary,
-                              backgroundColor: isAllFieldsSelected() ? .greenAccent : .deselectedButton) {
+            
+            Button {
+                
+                
+                if let payerName = payer?.name, let amountDouble {
+                    
+                    let newExpense = Expenses(expenseName: expensesName, receiptPhoto: nil, expenseDescription: description, amount: amountDouble, date: selectedDate, payerName: payerName)
 
-                    print("nao pegaaa")
+                    payer?.expenses.append(newExpense)
+                    if let payer {
+                        context.insert(payer)
+                    }
+                    
+                    try? context.save()
+                    dismiss()
+                    
+
                 }
+                
+            } label: {
+                
+                RegularButtonLabel(title: "Add Expense",
+                              titleColor: isAllFieldsSelected() ? .white : .primary,
+                              backgroundColor: isAllFieldsSelected() ? .greenAccent : .deselectedButton)
+            }
+               
                 
                 Button {
                     
@@ -167,7 +199,7 @@ struct AddExpenseSecondView: View {
 }
 
 #Preview {
-    AddExpenseSecondView(selectedPayer: "qualquercoisa")
+//    AddExpenseSecondView(selectedPayer: "qualquercoisa", payer: Member(name: "arnaldo", expenses: []))
 }
 
 

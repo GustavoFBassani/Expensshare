@@ -1,10 +1,14 @@
 import SwiftUI
+import SwiftData
 
 struct AddExpenseFirstView: View {
     
     @Environment(\.dismiss) var dismiss
-    @State private var goToAddExpensesSecondView = false
-    @State private var selectedPayer: String? = nil
+    @Environment(\.modelContext) var context
+    
+    @State var goToAddExpensesSecondView = false
+    @State var selectedPayer: String? = nil
+    @State var payerMember: Member? = nil
     
     var body: some View {
         NavigationStack {
@@ -24,10 +28,11 @@ struct AddExpenseFirstView: View {
                                 image: Image(participant.name),
                                 isSelected: selectedPayer == participant.name
                             ) {
+                                payerMember = participant
+                                print(payerMember?.name)
                                 selectedPayer = participant.name
-                                if let selectedPayer {
-                                    print(selectedPayer)
-                                }
+                                
+
                             }
                             .padding(.bottom, 16)
                         }
@@ -36,13 +41,14 @@ struct AddExpenseFirstView: View {
                 
                 VStack(spacing: 20) {
                     NavigationLink {
-                        if let selectedPayer {
-                            AddExpenseSecondView(selectedPayer: selectedPayer)
-                        }                      } label: {
+                        if let payerMember {
+                            AddExpenseSecondView(payer: payerMember)
+                        }
+                    } label: {
                             RegularButtonLabel(
                                 title: "Next Step",
-                                titleColor: selectedPayer != nil ? .white : .primary,
-                                backgroundColor: selectedPayer != nil ? .greenAccent : .deselectedButton
+                                titleColor: payerMember != nil ? .white : .primary,
+                                backgroundColor: payerMember != nil ? .greenAccent : .deselectedButton
                             )
                         }
                         .disabled(selectedPayer == nil)
@@ -53,7 +59,7 @@ struct AddExpenseFirstView: View {
                     } label: {
                         RegularButtonLabel(title: "Cancel", titleColor: .greenAccent, backgroundColor: .white)
                     }
-
+                    
                     
                     .shadow(color: .shadow, radius: 10, x: 0, y: 4)
                 }
@@ -84,7 +90,7 @@ struct AddExpenseFirstView: View {
 }
 
 #Preview {
-    AddExpenseFirstView()
+//    AddExpenseFirstView()
 }
 
 

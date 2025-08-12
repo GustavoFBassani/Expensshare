@@ -15,7 +15,14 @@ struct AllExpenses: View {
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
-        let allExpenses: [Expenses] = joseExpenses + emanuelExpenses + carlosExpenses
+        
+        var allExpenses: [Expenses] {
+            var expenses: [Expenses] = []
+            for member in mockedUser {
+                expenses += member.expenses
+            }
+            return expenses
+        }
 
         NavigationStack {
             ScrollView {
