@@ -5,6 +5,7 @@
 //  Created by Gustavo Ferreira bassani on 12/08/25.
 //
 
+//o codigo está humilde mas é um código honesto (sem ctrl C do chatgpt)
 
 import SwiftUI
 
@@ -126,7 +127,6 @@ struct ExpenseComponent: View {
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 8)
-            .padding(.horizontal)
             .background(
                 RoundedRectangle(cornerRadius: 16)
                     .fill(.cardbackgroundTwo))

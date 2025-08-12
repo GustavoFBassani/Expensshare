@@ -116,6 +116,8 @@ struct GroupsView: View {
                     try? modelContext.save()
                 }
             }
+                
+        
         }
     }
 }

@@ -13,6 +13,7 @@ import SwiftData
 
 struct AllExpenses: View {
     
+    @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
     @Query private var mockedUser: [Member]
     
@@ -30,30 +31,33 @@ struct AllExpenses: View {
         }
 
         NavigationStack {
-            ScrollView {
-                VStack {
-                    ForEach(allExpenses.sorted(by: {$0.date < $1.date})) { expense in
-                        
-                        NavigationLink {
-                            EditExpenses(expense: expense)
-                        } label: {
-                            
-                            ExpenseComponent(
-                                date: expense.date,
-                                payerName: expense.payerName,
-                                expenseName: expense.expenseName,
-                                amount: expense.amount
-                            )
-                            
+            List {
+                ForEach(allExpenses) { expense in
+                    ExpenseComponent(
+                        date: expense.date,
+                        payerName: expense.payerName,
+                        expenseName: expense.expenseName,
+                        amount: expense.amount
+                    )
+                    .contentShape(RoundedRectangle(cornerRadius: 16))
+                    .background(Color.background)
+                    .onTapGesture { editExpense = expense }
+                    .swipeActions(edge: .trailing) {
+                        Button("Delete", systemImage: "trash", role: .destructive) {
+                            modelContext.delete(expense)
+                            try? modelContext.save()
                         }
-                        
-                        .foregroundStyle(.primary)
-                        .padding(.bottom, 8)
                     }
-                    .swipeActions {
-
-                    }
+                    .listRowBackground(Color.clear)
                 }
+                .background(Color.background)
+
+            }
+            .listStyle(.plain)
+            .scrollContentBackground(.hidden)
+            .background(Color.background)
+            .navigationDestination(item: $editExpense) { expense in
+                EditExpenses(expense: expense)
             }
             .padding(.top, 24)
             .background(Color.background)
@@ -69,6 +73,7 @@ struct AllExpenses: View {
                     }
                 }
             })
+            
             .navigationTitle("All Expenses")
             .navigationBarTitleDisplayMode(.inline)
         }
@@ -82,7 +87,4 @@ struct AllExpenses: View {
 }
 
 
-
-//Shadow pega em tudo
-//paddings não estão certinhos
 
