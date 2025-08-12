@@ -9,6 +9,7 @@ import Foundation
 import SwiftData
 
 //Como fazer @Relationship
+
 public struct Expenses: Identifiable {
     public let id = UUID()
     let expenseName: String

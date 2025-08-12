@@ -8,28 +8,23 @@
 
 import SwiftUI
 
-extension View {
-    @ViewBuilder
-    func hidden(_ shouldHide: Bool) -> some View {
-        if shouldHide {
-            self.hidden()
-        } else {
-            self
-        }
-    }
-}
-
 struct EditExpenses: View {
     
-    @State var expensesName = "Grocery"
-    @State var description = "toilet paper + breed"
-    @State var amount = "R$ 30,00"
-    @State var selectedDate = Date()
+    var expense: Expenses
+    
+    @Environment(\.dismiss) var dismiss
+    
+    @State var expensesName: String = ""
+    @State var description: String = ""
+    @State var amount: String = ""
+    @State var payerName: String = ""
+    @State var selectedDate: Date = Date()
+    @State var imageData: Data? = nil
     
     @State private var isEditingExpensesName = false
     @State private var isEditingDescription = false
     @State private var isEditingAmount = false
-    var selectedPayer: String
+    @State private var selectedPayer: String = ""
     
     var body: some View {
         
@@ -44,10 +39,13 @@ struct EditExpenses: View {
                 Spacer()
                 
                 HStack {
-                    Image(.carlos)
+                    Image(payerName)
+                        .resizable()
+                        .scaledToFit()
                         .frame(width: 24, height: 24)
                     
-                    Text("Carlos")
+                    
+                    Text(payerName)
                 }
                 .foregroundStyle(.primary)
                 .font(.system(size: 17, weight: .medium))
@@ -106,8 +104,17 @@ struct EditExpenses: View {
                 Button {
                     //action
                 } label: {
-                    Image("camera")
-                        .frame(width: 90)
+                    
+                    if let imageData, let uiImage = UIImage(data: imageData) {
+                        Image(uiImage: uiImage)
+                            .frame(width: 90)
+                        
+                    } else {
+                        
+                        Image("camera")
+                            .frame(width: 90)
+                        
+                    }
                 }
             }
             
@@ -193,16 +200,48 @@ struct EditExpenses: View {
             
         }
         .toolbarBackgroundVisibility(.visible, for: .navigationBar)
-        .navigationTitle("Add Expenses")
-        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "chevron.left")
+                }
+            }
+        }
+        .toolbar(content: {
+            ToolbarItem(placement:.automatic) {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundStyle(.greenAccent)
+                        .frame(width: 21)
+                }
+            }
+        })
+        .navigationTitle("Edit Expenses")
+        .navigationBarBackButtonHidden()
         .padding(.top, 24)
         .padding(.horizontal, 16)
+        .frame(maxHeight: .infinity)
         .background(Color.background)
+        .onAppear {
+            expensesName = expense.expenseName
+            description = expense.description
+            amount = String(expense.amount)
+            selectedDate = expense.date
+            payerName = expense.payerName
+            imageData = expense.receiptPhoto
+            
+        }
     }
 }
 
 #Preview {
-    EditExpenses(selectedPayer: "qualquercoisa")
+    
+    EditExpenses(expense: Expenses(expenseName: "aaa", receiptPhoto: nil, description: "aa", amount: 43, date: Date(), payerName: "uu"))
+    
 }
 
 

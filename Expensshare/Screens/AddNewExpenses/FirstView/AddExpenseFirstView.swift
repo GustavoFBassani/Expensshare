@@ -1,30 +1,5 @@
 import SwiftUI
 
-struct participantGroupButton: View {
-    let name: String
-    let image: Image
-    let isSelected: Bool
-    let action: () -> Void
-    
-    var body: some View {
-        Button(action: action) {
-            HStack {
-                image
-                    .frame(width: 24, height: 24)
-                Text(name)
-            }
-            .frame(maxWidth: .infinity)
-        }
-        .foregroundStyle(.primary)
-        .padding(.vertical)
-        .frame(maxWidth: .infinity)
-        .background(RoundedRectangle(cornerRadius: 30).fill(isSelected ? Color.cardBackground : Color.white))
-        .padding(.horizontal, 60)
-        .shadow(color: .shadow, radius: 10, x: 0, y: 4)
-        .fontWeight(.semibold)
-    }
-}
-
 struct AddExpenseFirstView: View {
     
     @Environment(\.dismiss) var dismiss
@@ -73,9 +48,13 @@ struct AddExpenseFirstView: View {
                         .disabled(selectedPayer == nil)
                         .shadow(color: .shadow, radius: 10, x: 0, y: 4)
                     
-                    RegularButton(title: "Cancel", titleColor: .greenAccent, backgroundColor: .white) {
+                    Button {
                         dismiss()
+                    } label: {
+                        RegularButtonLabel(title: "Cancel", titleColor: .greenAccent, backgroundColor: .white)
                     }
+
+                    
                     .shadow(color: .shadow, radius: 10, x: 0, y: 4)
                 }
                 .padding(.horizontal)
@@ -100,6 +79,7 @@ struct AddExpenseFirstView: View {
             .navigationTitle("Add Expenses")
             .navigationBarTitleDisplayMode(.inline)
         }
+        .tint(Color.greenAccent)
     }
 }
 

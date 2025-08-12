@@ -1,0 +1,72 @@
+//
+//  AllExpenses.swift
+//  Expensshare
+//
+//  Created by Gustavo Ferreira bassani on 09/08/25.
+//
+
+
+//TODO:
+
+import SwiftUI
+
+struct AllExpenses: View {
+    
+    @Environment(\.dismiss) var dismiss
+
+    var body: some View {
+        let allExpenses: [Expenses] = joseExpenses + emanuelExpenses + carlosExpenses
+
+        NavigationStack {
+            ScrollView {
+                VStack {
+                    ForEach(allExpenses.sorted(by: {$0.date < $1.date})) { expense in
+                        
+                        NavigationLink {
+                            EditExpenses(expense: expense)
+                        } label: {
+                            
+                            ExpenseComponent(
+                                date: expense.date,
+                                payerName: expense.payerName,
+                                expenseName: expense.expenseName,
+                                amount: expense.amount
+                            )
+                            
+                        }
+                        .foregroundStyle(.primary)
+                        .padding(.bottom, 8)
+                    }
+                }
+            }
+            .padding(.top, 24)
+            .background(Color.background)
+            .toolbarBackgroundVisibility(.visible, for: .navigationBar)
+            .toolbar(content: {
+                ToolbarItem(placement:.automatic) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundStyle(.greenAccent)
+                            .frame(width: 21)
+                    }
+                }
+            })
+            .navigationTitle("All Expenses")
+            .navigationBarTitleDisplayMode(.inline)
+        }
+        .tint(Color.greenAccent)
+        
+    }
+}
+
+#Preview {
+    AllExpenses()
+}
+
+
+
+//Shadow pega em tudo
+//paddings não estão certinhos
+

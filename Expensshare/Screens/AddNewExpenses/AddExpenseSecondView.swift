@@ -7,27 +7,6 @@
 
 import SwiftUI
 
-struct TextFieldWithTitle: View {
-    
-    @Binding var textFieldInput: String
-    let labelTitle: String
-    let placeHolder: String
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text(labelTitle)
-                .font(.body)
-                .fontWeight(.medium)
-            TextField(placeHolder, text: $textFieldInput)
-                .foregroundStyle(.primary)
-                .font(.body)
-                .padding(.horizontal, 24)
-                .padding(.vertical, 11)
-                .background(RoundedRectangle(cornerRadius: 8) .fill(.white))
-        }
-    }
-}
-
 struct AddExpenseSecondView: View {
     
     @Environment(\.dismiss) var dismiss
@@ -46,9 +25,15 @@ struct AddExpenseSecondView: View {
         return isAllFilled
     }
     
+    var dateString: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy"
+        return formatter.string(from: selectedDate)
+    }
+    
     var body: some View {
 
-            VStack(spacing: 24) {
+        VStack(alignment: .leading, spacing: 24) {
 
                 HStack {
                     Text("Add expenses to")
@@ -59,10 +44,12 @@ struct AddExpenseSecondView: View {
                     Spacer()
                     
                     HStack {
-                        Image(.carlos)
+                        Image(selectedPayer)
+                            .resizable()
+                            .scaledToFit()
                             .frame(width: 24, height: 24)
                         
-                        Text("Carlos")
+                        Text(selectedPayer)
                     }
                     .foregroundStyle(.primary)
                     .font(.system(size: 17, weight: .medium))
@@ -89,34 +76,76 @@ struct AddExpenseSecondView: View {
                             .frame(width: 90)
                     }
                 }
+                .frame(maxWidth: .infinity)
                 
                 TextFieldWithTitle(textFieldInput: $description, labelTitle: "Description", placeHolder: "e.g toilet paper, breeds, bills...")
                 
                 TextFieldWithTitle(textFieldInput: $amount, labelTitle: "Amount", placeHolder: "R$ e.g. 30,00")
                 
-                //Arrumar depois
                 DatePicker("", selection: $selectedDate, displayedComponents: .date)
-                    .datePickerStyle(.automatic)
                     .labelsHidden()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                
+                    .frame(maxWidth: 190, alignment: .leading)
+                    .environment(\.locale, Locale(identifier: "pt-BR"))
+                    .overlay() {
+                        HStack {
+                            
+                            Text(dateString)
+                                .padding(.horizontal, 8)
+                                .foregroundStyle(.greenAccent)
+                                
+                            
+                            Spacer()
+                            
+                            Image(systemName: "chevron.up.chevron.down")
+                                .frame(minWidth: 8, maxHeight: 8)
+                                .padding(.horizontal, 8)
+                                .foregroundStyle(.greenAccent)
+
+                        }
+                        
+                        .frame(maxWidth: .infinity)
+                        .frame(maxHeight: .infinity)
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(.backgroundFilsTertiary)
+                        )
+                            .allowsHitTesting(false)
+                            
+                    }
+                    
                 
                 RegularButton(title: "Add Expense",
                               titleColor: isAllFieldsSelected() ? .white : .primary,
                               backgroundColor: isAllFieldsSelected() ? .greenAccent : .deselectedButton) {
-                    //guardar dados
+
                     print("nao pegaaa")
                 }
+                
+                Button {
                     
-                RegularButton(title: "Back",
-                              titleColor: .greenAccent,
-                              backgroundColor: .white) {
                     dismiss()
-                    print("oiii")
+
+                } label: {
+                    RegularButtonLabel(title: "Back",
+                                  titleColor: .greenAccent,
+                                  backgroundColor: .white)
                 }
+
+                    
+     
                 
             }
             .toolbarBackgroundVisibility(.visible, for: .navigationBar)
+            .navigationBarBackButtonHidden()
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                    }
+                }
+            }
             .toolbar(content: {
                 ToolbarItem(placement:.automatic) {
                     Button {
@@ -141,7 +170,5 @@ struct AddExpenseSecondView: View {
 }
 
 
-//Modelo datepicker errado
 //mudar cor do back pra verde
-// botões nao funcionam
 

@@ -11,7 +11,15 @@ struct RegularButton: View {
     let title: String
     let titleColor: Color
     let backgroundColor: Color
-    let action: () -> Void
+    var action: () -> Void
+    
+    
+    init(title: String, titleColor: Color, backgroundColor: Color, action: @escaping @MainActor () -> Void) {
+        self.title = title
+        self.titleColor = titleColor
+        self.backgroundColor = backgroundColor
+        self.action = action
+    }
     
     var body: some View {
         Button("", action: action)
@@ -35,13 +43,16 @@ struct RegularButtonLabel: View {
     let backgroundColor: Color
 
     var body: some View {
-        Text(title)
-            .fontWeight(.bold)
-            .foregroundStyle(titleColor)
+        Text("")
             .frame(maxWidth: .infinity)
             .padding()
             .background(RoundedRectangle(cornerRadius: 16).fill(backgroundColor))
             .shadow(color: .shadow, radius: 2, x: 0, y: 4)
+            .overlay {
+                Text(title)
+                    .fontWeight(.bold)
+                    .foregroundStyle(titleColor)
+            }
 
     }
 }
