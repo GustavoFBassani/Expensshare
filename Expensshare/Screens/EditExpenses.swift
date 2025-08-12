@@ -7,12 +7,14 @@
 
 
 import SwiftUI
+import SwiftData
 
 struct EditExpenses: View {
     
     var expense: Expenses
     
     @Environment(\.dismiss) var dismiss
+    @Environment(\.modelContext) var modelContext
     
     @State var expensesName: String = ""
     @State var description: String = ""
@@ -26,9 +28,24 @@ struct EditExpenses: View {
     @State private var isEditingAmount = false
     @State private var selectedPayer: String = ""
     
+    var dateString: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy"
+        return formatter.string(from: selectedDate)
+    }
+    
+    var amountDouble: Double? {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.locale = Locale(identifier: "pt_BR")
+        return formatter.number(from: amount) as? Double
+        
+    }
+
+    
     var body: some View {
         
-        VStack( spacing: 24) {
+        VStack(alignment: .leading, spacing: 24) {
             
             HStack {
                 Text("Add expenses to")
@@ -101,7 +118,7 @@ struct EditExpenses: View {
                     .font(.body)
                     .fontWeight(.medium)
                 
-                Button {
+                Button { // desativado por enquanto
                     //action
                 } label: {
                     
@@ -117,6 +134,7 @@ struct EditExpenses: View {
                     }
                 }
             }
+            .frame(maxWidth: .infinity)
             
             HStack(alignment: .bottom) {
                 VStack(alignment: .leading){
@@ -187,16 +205,71 @@ struct EditExpenses: View {
                 .foregroundStyle(.greenAccent)
                 .hidden(isEditingAmount)
             }
-            //Arrumar depois
+
             DatePicker("", selection: $selectedDate, displayedComponents: .date)
-                .datePickerStyle(.automatic)
                 .labelsHidden()
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(maxWidth: 190, alignment: .leading)
+                .environment(\.locale, Locale(identifier: "pt-BR"))
+                .overlay() {
+                    HStack {
+                        
+                        Text(dateString)
+                            .padding(.horizontal, 8)
+                            .foregroundStyle(.greenAccent)
+                            
+                        
+                        Spacer()
+                        
+                        Image(systemName: "chevron.up.chevron.down")
+                            .frame(minWidth: 8, maxHeight: 8)
+                            .padding(.horizontal, 8)
+                            .foregroundStyle(.greenAccent)
+
+                    }
+                    
+                    .frame(maxWidth: .infinity)
+                    .frame(maxHeight: .infinity)
+                    .background(
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(.backgroundFilsTertiary)
+                    )
+                        .allowsHitTesting(false)
+                        
+                }
             
             
-            RegularButton(title: "Update Expenses", titleColor: .white, backgroundColor: .greenAccent) { }
+            Button {
+
+                if let amountDouble {
+                    
+                    expense.expenseName = expensesName
+                    expense.expenseDescription = description
+                    expense.amount = amountDouble
+                    expense.date = selectedDate
+                    expense.payerName = payerName
+                    expense.receiptPhoto = imageData
+                    
+                    try? modelContext.save()
+                    
+                }
+
+                dismiss()
+                
+            } label: {
+                
+                RegularButtonLabel(title: "Update Expenses", titleColor: .white, backgroundColor: .greenAccent)
+            }
+
+            Button {
+                
+                dismiss()
+                
+            } label: {
+                
+                RegularButtonLabel(title: "Discard change", titleColor: .greenAccent, backgroundColor: .white)
+                
+            }
             
-            RegularButton(title: "Discard change", titleColor: .greenAccent, backgroundColor: .white) { }
             
         }
         .toolbarBackgroundVisibility(.visible, for: .navigationBar)
@@ -246,4 +319,3 @@ struct EditExpenses: View {
 
 
 
-//componentizar se sobrar tempo

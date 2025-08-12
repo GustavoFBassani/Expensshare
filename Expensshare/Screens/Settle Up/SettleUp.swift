@@ -7,6 +7,7 @@
 
 //TODO: resolver padding placeholder....
 import SwiftUI
+import SwiftData
 
 struct SettleUp: View {
     
@@ -14,6 +15,8 @@ struct SettleUp: View {
     @State var selectedPayer: String? = nil
     @State var selectedReceiver: String? = nil
     @State var amountInput: String = ""
+    
+    @Query private var mockedUser: [Member]
     
     var body: some View {
         NavigationStack {

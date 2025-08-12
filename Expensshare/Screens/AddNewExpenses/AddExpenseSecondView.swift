@@ -136,9 +136,10 @@ struct AddExpenseSecondView: View {
                     let newExpense = Expenses(expenseName: expensesName, receiptPhoto: nil, expenseDescription: description, amount: amountDouble, date: selectedDate, payerName: payerName)
 
                     payer?.expenses.append(newExpense)
-                    if let payer {
-                        context.insert(payer)
-                    }
+                    
+                    
+                    context.insert(newExpense)
+                    
                     
                     try? context.save()
                     dismiss()

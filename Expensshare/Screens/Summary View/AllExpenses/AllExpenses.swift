@@ -9,11 +9,16 @@
 //TODO:
 
 import SwiftUI
+import SwiftData
 
 struct AllExpenses: View {
     
     @Environment(\.dismiss) var dismiss
+    @Query private var mockedUser: [Member]
+    
+    @State var editExpense: Expenses?
 
+    
     var body: some View {
         
         var allExpenses: [Expenses] {
@@ -41,8 +46,12 @@ struct AllExpenses: View {
                             )
                             
                         }
+                        
                         .foregroundStyle(.primary)
                         .padding(.bottom, 8)
+                    }
+                    .swipeActions {
+
                     }
                 }
             }

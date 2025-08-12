@@ -27,7 +27,6 @@ struct ExpenseComponent: View {
         return formatter.string(from: NSNumber(value: value)) ?? "\(value)"
     }
     
-    //cant use stored property depending on property of instance..
     private var payerWithoutAccent: String {
         payerName.folding(options: .diacriticInsensitive, locale: .current)
     }
@@ -106,7 +105,6 @@ struct ExpenseComponent: View {
                                 .font(.callout)
                                 .foregroundStyle(.secondary)
                                 .foregroundStyle(.primary)
-
                         }
                     }
                 }

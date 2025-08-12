@@ -13,6 +13,7 @@ struct ExpensshareApp: App {
     var body: some Scene {
         WindowGroup {
             GroupsView()
+            
         }
         .modelContainer(for: [Member.self, Expenses.self])
     }

@@ -6,11 +6,16 @@
 //
 
 import SwiftUI
+import SwiftData
 import Charts
 
 struct PieSliceWithChart: View {
     
-    let uniqueNames: [String] = mockedUser.map(\.name)
+    @Query private var mockedUser: [Member]
+
+    var uniqueNames: [String] {
+        mockedUser.map(\.name)
+    }
     
     var body: some View {
         HStack(spacing: 51) {

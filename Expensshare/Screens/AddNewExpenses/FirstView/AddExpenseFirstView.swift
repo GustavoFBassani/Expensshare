@@ -10,6 +10,8 @@ struct AddExpenseFirstView: View {
     @State var selectedPayer: String? = nil
     @State var payerMember: Member? = nil
     
+    @Query private var mockedUser: [Member]
+    
     var body: some View {
         NavigationStack {
             

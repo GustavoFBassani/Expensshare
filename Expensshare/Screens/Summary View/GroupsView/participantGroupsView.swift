@@ -5,8 +5,11 @@
 //  Created by Gustavo Ferreira bassani on 12/08/25.
 //
 import SwiftUI
+import SwiftData
 
 struct participantGroupsView: View {
+    
+    @Query private var mockedUser: [Member]
     
     func formatCurrency(_ value: Double) -> String {
         NumberFormatter.brCurrency.string(from: NSNumber(value: value)) ?? "\(value)"

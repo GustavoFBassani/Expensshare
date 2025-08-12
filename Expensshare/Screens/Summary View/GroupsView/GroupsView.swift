@@ -6,13 +6,15 @@
 //
 
 import SwiftUI
-
+import SwiftData
 
 struct GroupsView: View {
+    @Environment(\.modelContext) var modelContext
     
     @State private var showAddExpenses = false
     @State private var showAllExpenses = false
     @State private var showSettleUp = false
+    @Query private var mockedUser: [Member]
     
     func formatCurrency(_ value: Double) -> String {
         NumberFormatter.brCurrency.string(from: NSNumber(value: value)) ?? "\(value)"
@@ -91,6 +93,28 @@ struct GroupsView: View {
                         .fontWeight(.semibold)
                 }
             .padding()
+            }
+        }
+        
+        .onAppear{
+            if mockedUser.isEmpty {
+                let userToAdd = [
+                    Member(name: "Carlos",expenses:  [ Expenses(expenseName: "Grocery", receiptPhoto: nil, expenseDescription: "complicado isso ai", amount: 45.00, date: makeMockedDate(string: "03/03/2025"), payerName: "Carlos"),
+                                                       Expenses(expenseName: "Grocery", receiptPhoto: nil, expenseDescription: "complicado isso ai", amount: 15.00, date: makeMockedDate(string: "04/03/2025"), payerName: "Carlos"),
+                                                       Expenses(expenseName: "recebidos", receiptPhoto: nil, expenseDescription: "complicado isso ai", amount: -20, date: makeMockedDate(string: "05/03/2025"), payerName: "Carlos")]),
+                    
+                    Member(name: "Emanuel",expenses: [Expenses(expenseName: "Ethernet", receiptPhoto: nil, expenseDescription: "complicado isso ai", amount: 45.00, date: makeMockedDate(string: "04/03/2025"), payerName: "Emanuel")]),
+                    
+                    Member(name: "Jose",expenses: [ Expenses(expenseName: "Paid to Carlos", receiptPhoto: nil, expenseDescription: "complicado isso ai", amount: 20.00, date: makeMockedDate(string: "05/03/2025"), payerName: "Jose"),
+                                                    Expenses(expenseName: "Energy bill", receiptPhoto: nil, expenseDescription: "complicado isso ai", amount: 90.00, date: makeMockedDate(string: "06/03/2025"), payerName: "Jose"),
+                                                    Expenses(expenseName: "Breeds", receiptPhoto: nil, expenseDescription: "complicado isso ai", amount: 15.00, date: makeMockedDate(string: "08/03/2025"), payerName: "Jose")])
+                ]
+                
+                for member in userToAdd {
+                    modelContext.insert(member)
+                    
+                    try? modelContext.save()
+                }
             }
         }
     }
