@@ -5,7 +5,7 @@
 //  Created by Gustavo Ferreira bassani on 12/08/25.
 //
 
-//o codigo está humilde mas é um código honesto (sem ctrl C do chatgpt)
+//o codigo está humilde mas é um código honesto (sem muito ctrl C do chatgpt)
 
 import SwiftUI
 
@@ -57,6 +57,7 @@ struct ExpenseComponent: View {
                     }
                 }
             }
+            .padding(.horizontal)
             
             Spacer()
             
@@ -75,7 +76,7 @@ struct ExpenseComponent: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 8)
-        .padding(.horizontal)
+
         .background(
             RoundedRectangle(cornerRadius: 16)
                 .fill(.white)
@@ -126,12 +127,17 @@ struct ExpenseComponent: View {
                 }
             }
             .frame(maxWidth: .infinity)
+            .padding(.horizontal)
             .padding(.vertical, 8)
             .background(
                 RoundedRectangle(cornerRadius: 16)
                     .fill(.cardbackgroundTwo))
         })
-        .padding(.horizontal)
 
     }
+}
+
+
+#Preview {
+    ExpenseComponent(date: Date(), payerName: "Carlos", expenseName: "grocery", amount: 45.00)
 }

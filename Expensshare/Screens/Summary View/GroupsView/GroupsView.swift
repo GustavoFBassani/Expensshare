@@ -101,7 +101,7 @@ struct GroupsView: View {
                 let userToAdd = [
                     Member(name: "Carlos",expenses:  [ Expenses(expenseName: "Grocery", receiptPhoto: nil, expenseDescription: "complicado isso ai", amount: 45.00, date: makeMockedDate(string: "03/03/2025"), payerName: "Carlos"),
                                                        Expenses(expenseName: "Grocery", receiptPhoto: nil, expenseDescription: "complicado isso ai", amount: 15.00, date: makeMockedDate(string: "04/03/2025"), payerName: "Carlos"),
-                                                       Expenses(expenseName: "recebidos", receiptPhoto: nil, expenseDescription: "complicado isso ai", amount: -20, date: makeMockedDate(string: "05/03/2025"), payerName: "Carlos")]),
+                                                       Expenses(expenseName: "Received", receiptPhoto: nil, expenseDescription: "complicado isso ai", amount: -20, date: makeMockedDate(string: "05/03/2025"), payerName: "Carlos")]),
                     
                     Member(name: "Emanuel",expenses: [Expenses(expenseName: "Ethernet", receiptPhoto: nil, expenseDescription: "complicado isso ai", amount: 45.00, date: makeMockedDate(string: "04/03/2025"), payerName: "Emanuel")]),
                     

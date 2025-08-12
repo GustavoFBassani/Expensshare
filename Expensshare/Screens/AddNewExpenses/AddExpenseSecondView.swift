@@ -139,12 +139,10 @@ struct AddExpenseSecondView: View {
                     
                     
                     context.insert(newExpense)
-                    
-                    
+    
                     try? context.save()
                     dismiss()
                     
-
                 }
                 
             } label: {
@@ -153,8 +151,7 @@ struct AddExpenseSecondView: View {
                               titleColor: isAllFieldsSelected() ? .white : .primary,
                               backgroundColor: isAllFieldsSelected() ? .greenAccent : .deselectedButton)
             }
-               
-                
+            
                 Button {
                     
                     dismiss()
@@ -164,10 +161,7 @@ struct AddExpenseSecondView: View {
                                   titleColor: .greenAccent,
                                   backgroundColor: .white)
                 }
-
-                    
-     
-                
+            
             }
             .toolbarBackgroundVisibility(.visible, for: .navigationBar)
             .navigationBarBackButtonHidden()
@@ -204,5 +198,4 @@ struct AddExpenseSecondView: View {
 }
 
 
-//mudar cor do back pra verde
 

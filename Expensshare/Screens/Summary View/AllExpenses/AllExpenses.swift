@@ -50,6 +50,7 @@ struct AllExpenses: View {
                     }
                     .listRowBackground(Color.clear)
                 }
+                .listRowSeparator(.hidden)
                 .background(Color.background)
 
             }

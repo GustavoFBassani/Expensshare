@@ -12,9 +12,19 @@ import SwiftData
 struct SettleUp: View {
     
     @Environment(\.dismiss) var dismiss
+    @Environment(\.modelContext) var modelContext
+    
     @State var selectedPayer: String? = nil
     @State var selectedReceiver: String? = nil
     @State var amountInput: String = ""
+    
+    var amountDouble: Double? {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.locale = Locale(identifier: "pt_BR")
+        return formatter.number(from: amountInput) as? Double
+        
+    }
     
     @Query private var mockedUser: [Member]
     
@@ -60,6 +70,41 @@ struct SettleUp: View {
                     let paidAndReceiverSelected = selectedPayer != nil && selectedReceiver != nil && amountInput != ""
 
                     Button {
+                        
+                        do {
+                            guard let amountDouble else { return }
+                            
+                            if let receiver = mockedUser.first(where: { $0.name == selectedReceiver }) {
+                                let received = Expenses(
+                                    expenseName: "Received from \(selectedPayer ?? "")",
+                                    receiptPhoto: nil,
+                                    expenseDescription: "Payment received",
+                                    amount: -amountDouble,
+                                    date: Date(),
+                                    payerName: receiver.name
+                                )
+                                received.payer = receiver
+                                modelContext.insert(received)
+                            }
+
+                            if let payer = mockedUser.first(where: { $0.name == selectedPayer }) {
+                                let paid = Expenses(
+                                    expenseName: "Paid to \(selectedReceiver ?? "")",
+                                    receiptPhoto: nil,
+                                    expenseDescription: "Payment made",
+                                    amount: amountDouble,
+                                    date: Date(),
+                                    payerName: payer.name
+                                )
+                                paid.payer = payer
+                                modelContext.insert(paid)
+                            }
+
+                            try modelContext.save()
+                            dismiss()
+                        } catch {
+                            print("Save error: \(error)")
+                        }
                         
                     } label: {
                         RegularButtonLabel(title: "Settle up now",
