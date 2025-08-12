@@ -228,7 +228,7 @@ struct EditExpenses: View {
         .background(Color.background)
         .onAppear {
             expensesName = expense.expenseName
-            description = expense.description
+            description = expense.expenseDescription
             amount = String(expense.amount)
             selectedDate = expense.date
             payerName = expense.payerName
@@ -240,7 +240,7 @@ struct EditExpenses: View {
 
 #Preview {
     
-    EditExpenses(expense: Expenses(expenseName: "aaa", receiptPhoto: nil, description: "aa", amount: 43, date: Date(), payerName: "uu"))
+    EditExpenses(expense: Expenses(expenseName: "aaa", receiptPhoto: nil, expenseDescription: "aa", amount: 43, date: Date(), payerName: "uu"))
     
 }
 

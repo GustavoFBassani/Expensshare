@@ -9,6 +9,8 @@ import SwiftUI
 
 struct AddExpenseSecondView: View {
     
+    
+    
     @Environment(\.dismiss) var dismiss
     @State var expensesName = ""
     @State var description = ""
@@ -113,7 +115,6 @@ struct AddExpenseSecondView: View {
                             
                     }
                     
-                
                 RegularButton(title: "Add Expense",
                               titleColor: isAllFieldsSelected() ? .white : .primary,
                               backgroundColor: isAllFieldsSelected() ? .greenAccent : .deselectedButton) {

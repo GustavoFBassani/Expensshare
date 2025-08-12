@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct ExpensshareApp: App {
@@ -13,5 +14,6 @@ struct ExpensshareApp: App {
         WindowGroup {
             GroupsView()
         }
+        .modelContainer(for: [Member.self, Expenses.self])
     }
 }
