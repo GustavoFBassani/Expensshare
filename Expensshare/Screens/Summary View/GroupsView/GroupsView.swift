@@ -20,6 +20,14 @@ struct GroupsView: View {
         NumberFormatter.brCurrency.string(from: NSNumber(value: value)) ?? "\(value)"
     }
     
+    func makeMockedDate( string: String) -> Date {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy"
+        formatter.locale = Locale(identifier: "pt_BR")
+        return formatter.date(from: string) ?? Date()
+    }
+
+    
     func mediaOfExpenses() -> String {
         var sum: Double = 0
         var count: Double = 0
@@ -31,7 +39,7 @@ struct GroupsView: View {
         let media = sum/count
         return formatCurrency(media)
     }
-
+    
     func totalOfExpenses() -> String {
         var sum: Double = 0
         
@@ -61,8 +69,8 @@ struct GroupsView: View {
                     } label: {
                         RegularButtonLabel(title: "Expenses", titleColor: .greenAccent, backgroundColor: .white)
                     }
-
-
+                    
+                    
                     Spacer()
                 }
                 .padding(.horizontal)
@@ -92,7 +100,7 @@ struct GroupsView: View {
                         .foregroundStyle(.blue)
                         .fontWeight(.semibold)
                 }
-            .padding()
+                .padding()
             }
         }
         
@@ -116,15 +124,13 @@ struct GroupsView: View {
                     try? modelContext.save()
                 }
             }
-                
-        
+            
+            
         }
     }
 }
 
-#Preview {
-    GroupsView()
-}
+//#Preview {
+//    GroupsView()
+//}
 
-//botoes nao funcionam???
-// mudar os botoes pra label, dentro de um botao

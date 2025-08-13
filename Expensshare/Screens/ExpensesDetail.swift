@@ -4,6 +4,7 @@
 //
 //  Created by Gustavo Ferreira bassani on 09/08/25.
 //
+// essa tela nao faz sentido se eu posso editar todas as despesas... só fiz pelo esporte mesmo.
 
 import SwiftUI
 

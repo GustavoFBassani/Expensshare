@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct StatCard: View {
     let title: String
     let value: String

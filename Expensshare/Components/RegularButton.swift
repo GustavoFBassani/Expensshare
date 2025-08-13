@@ -13,7 +13,6 @@ struct RegularButton: View {
     let backgroundColor: Color
     var action: () -> Void
     
-    
     init(title: String, titleColor: Color, backgroundColor: Color, action: @escaping @MainActor () -> Void) {
         self.title = title
         self.titleColor = titleColor

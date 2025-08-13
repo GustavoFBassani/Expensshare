@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct TextFieldWithTitle: View {
-    
     @Binding var textFieldInput: String
     let labelTitle: String
     let placeHolder: String

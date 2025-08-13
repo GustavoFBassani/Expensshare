@@ -40,7 +40,7 @@ public class Member: Identifiable {
     var expenses: [Expenses] 
     
     var totalExpenses: Double {
-        expenses.reduce(0) { $0 + $1.amount} //reduce take a array and a single type with the sum of all elements
+        expenses.reduce(0) {$0 + $1.amount} //reduce take a array and a single type with the sum of all elements
     }
     
     init(name: String, expenses: [Expenses]) {
@@ -49,23 +49,4 @@ public class Member: Identifiable {
     }
 }
 
-func makeMockedDate( string: String) -> Date {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "dd/MM/yyyy"
-    formatter.locale = Locale(identifier: "pt_BR")
-    return formatter.date(from: string) ?? Date()
-}
 
-
-//MARK: MOCKED DATA
-//public let mockedUser = [
-//    Member(name: "Carlos",expenses:  [ Expenses(expenseName: "Grocery", receiptPhoto: nil, expenseDescription: "complicado isso ai", amount: 45.00, date: makeMockedDate(string: "03/03/2025"), payerName: "Carlos"),
-//                                       Expenses(expenseName: "Grocery", receiptPhoto: nil, expenseDescription: "complicado isso ai", amount: 15.00, date: makeMockedDate(string: "04/03/2025"), payerName: "Carlos"),
-//                                       Expenses(expenseName: "recebidos", receiptPhoto: nil, expenseDescription: "complicado isso ai", amount: -20, date: makeMockedDate(string: "05/03/2025"), payerName: "Carlos")]),
-//    
-//    Member(name: "Emanuel",expenses: [Expenses(expenseName: "Ethernet", receiptPhoto: nil, expenseDescription: "complicado isso ai", amount: 45.00, date: makeMockedDate(string: "04/03/2025"), payerName: "Emanuel")]),
-//    
-//    Member(name: "Jose",expenses: [ Expenses(expenseName: "Paid to Carlos", receiptPhoto: nil, expenseDescription: "complicado isso ai", amount: 20.00, date: makeMockedDate(string: "05/03/2025"), payerName: "Jose"),
-//                                    Expenses(expenseName: "Energy bill", receiptPhoto: nil, expenseDescription: "complicado isso ai", amount: 90.00, date: makeMockedDate(string: "06/03/2025"), payerName: "Jose"),
-//                                    Expenses(expenseName: "Breeds", receiptPhoto: nil, expenseDescription: "complicado isso ai", amount: 15.00, date: makeMockedDate(string: "08/03/2025"), payerName: "Jose")])
-//]
